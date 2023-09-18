@@ -19,8 +19,10 @@ export async function handleVestingPlanAdded(
 
   const { planId, lockPeriod, vestingPeriod, initialUnlockPercent } =
     event.args;
+
+  const id = `${event.address}:${planId.toString()}}`;
   const vestingPlan = VestingPlan.create({
-    id: planId.toString(),
+    id,
     lockPeriod: lockPeriod.toBigInt(),
     vestingPeriod: vestingPeriod.toBigInt(),
     initialUnlockPercentage: initialUnlockPercent.toBigInt(),
@@ -39,14 +41,14 @@ export async function handleVestingAllocated(
 
   const { user, planId, allocation } = event.args;
 
-  const vestingPlan = await VestingPlan.get(planId.toString());
+  const vestingPlan = await VestingPlan.get(`${event.address}:${planId.toString()}`);
   assert(vestingPlan, 'No vesting plan found');
   vestingPlan.totalAllocation =
     vestingPlan.totalAllocation + allocation.toBigInt();
   await vestingPlan.save();
 
   const vestingAllocation = VestingAllocation.create({
-    id: user,
+    id: `${event.address}:${user}`,
     planId: planId.toString(),
     amount: allocation.toBigInt(),
   });
@@ -62,17 +64,18 @@ export async function handleVestingClaimed(
 
   const { user, amount } = event.args;
 
-  const allocationRecord = await VestingAllocation.get(user);
+  const id = `${event.address}:${user}`;
+  const allocationRecord = await VestingAllocation.get(id);
   assert(allocationRecord, 'No allocation record found');
 
-  const claimRecord = await VestingClaim.get(user);
+  const claimRecord = await VestingClaim.get(id);
   if (claimRecord) {
     claimRecord.totalClaimed = claimRecord.totalClaimed + amount.toBigInt();
     claimRecord.remainder = allocationRecord.amount - claimRecord.totalClaimed;
     await claimRecord.save();
   } else {
     const claim = VestingClaim.create({
-      id: user,
+      id,
       allocationId: user,
       totalClaimed: amount.toBigInt(),
       remainder: allocationRecord.amount - amount.toBigInt(),
