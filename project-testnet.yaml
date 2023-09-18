@@ -21,7 +21,7 @@ network:
 
 x-ethereum: &ethereum
   kind: ethereum/Runtime
-  startBlock: 39105221 # TODO: change to the new vesting contract block height
+  startBlock: 40229772
   assets:
     vesting:
       file: ./node_modules/@subql/contract-sdk/artifacts/contracts/Vesting.sol/Vesting.json
@@ -30,7 +30,7 @@ dataSources:
   - <<: *ethereum
     options:
       abi: vesting
-      address: '0x33213826323D9231eE5f70bA2D961fF3d5691373' # TODO: change to the new vesting contract address
+      address: '0xF7cec3B18B01Fc7Cacab478BD3037C24Ce21239f'
     mapping:
       file: ./dist/index.js
       handlers:
