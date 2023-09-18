@@ -1,0 +1,66 @@
+{
+  "name": "network-vesting-subql",
+  "version": "1.0.0",
+  "description": "Subql project for indexing the Subquery Network Vesting Contract",
+  "main": "dist/index.js",
+  "scripts": {
+    "build:testnet": "yarn check-filters testnet && ./node_modules/.bin/subql build",
+    "codegen:testnet": "./node_modules/.bin/subql codegen -f ./project-testnet.yaml",
+    "deploy:testnet": "subql publish -f ./project-testnet.yaml",
+    "validate": "subql validate",
+    "prepare": "husky install",
+    "postinstall": "sh ./scripts/postinstall.sh",
+    "prepack": "rm -rf dist && yarn build",
+    "check-filters": "node -r ts-node/register/transpile-only ./scripts/checkFilters.ts",
+    "prettier:fix": "prettier --write ."
+  },
+  "homepage": "https://github.com/subquery/subquery-network-subql-project",
+  "repository": "https://github.com/subquery/subquery-network-subql-project",
+  "files": [
+    "dist",
+    "schema.graphql",
+    "project.yaml"
+  ],
+  "author": "SubQuery Pty. Limited",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@subql/cli": "^3.6.1",
+    "@typechain/ethers-v5": "^10.2.0",
+    "@types/bs58": "^4.0.1",
+    "@types/js-yaml": "^4.0.5",
+    "@typescript-eslint/eslint-plugin": "4",
+    "@typescript-eslint/parser": "4",
+    "eslint": "7",
+    "eslint-config-prettier": "^8.4.0",
+    "eslint-plugin-header": "^3.1.1",
+    "eslint-plugin-import": "^2.25.4",
+    "husky": ">=6",
+    "js-yaml": "^4.1.0",
+    "lint-staged": ">=10",
+    "prettier": "2.5.1",
+    "ts-node": "^10.7.0",
+    "typechain": "^8.1.1",
+    "typescript": "4.5.5"
+  },
+  "dependencies": {
+    "@ethersproject/abi": "^5.7.0",
+    "@subql/contract-sdk": "^0.16.0",
+    "@subql/contract-sdk-15": "npm:@subql/contract-sdk@0.15.0",
+    "@subql/types-ethereum": "^2.2.4",
+    "@types/pino": "^7.0.5",
+    "@types/validator": "latest",
+    "bs58": "^4.0.1",
+    "ethers": "^5.7.2",
+    "pino": "^7.8.0"
+  },
+  "resolutions": {
+    "class-transformer": "0.4.0",
+    "ipfs-unixfs": "6.0.6",
+    "@ethersproject/base64": "5.7.0",
+    "@polkadot/util": "12.3.2",
+    "@polkadot/util-crypto": "12.3.2."
+  },
+  "lint-staged": {
+    "*.{ts,css,md}": "prettier --write"
+  }
+}
