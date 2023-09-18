@@ -12,7 +12,8 @@
     "postinstall": "sh ./scripts/postinstall.sh",
     "prepack": "rm -rf dist && yarn build",
     "check-filters": "node -r ts-node/register/transpile-only ./scripts/checkFilters.ts",
-    "prettier:fix": "prettier --write ."
+    "prettier:fix": "prettier --write .",
+    "eslint:fix": "eslint --fix ."
   },
   "homepage": "https://github.com/subquery/subquery-network-subql-project",
   "repository": "https://github.com/subquery/subquery-network-subql-project",
@@ -44,8 +45,7 @@
   },
   "dependencies": {
     "@ethersproject/abi": "^5.7.0",
-    "@subql/contract-sdk": "^0.16.0",
-    "@subql/contract-sdk-15": "npm:@subql/contract-sdk@0.15.0",
+    "@subql/contract-sdk": "^0.16.1-0",
     "@subql/types-ethereum": "^2.2.4",
     "@types/pino": "^7.0.5",
     "@types/validator": "latest",

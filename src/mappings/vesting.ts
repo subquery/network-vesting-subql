@@ -1,16 +1,19 @@
+// Copyright 2020-2023 SubQuery Pte Ltd authors & contributors
+// SPDX-License-Identifier: Apache-2.0
+
 import {
-  AddVestingPlanEvent,
   VestingAllocatedEvent,
-  VestingClaimed,
+  VestingClaimedEvent,
+  VestingPlanAddedEvent,
 } from '@subql/contract-sdk/typechain/Vesting';
 import { EthereumLog } from '@subql/types-ethereum';
 import assert from 'assert';
 import { VestingAllocation, VestingClaim, VestingPlan } from '../types';
 
-export async function handleNewVestingPlan(
-  event: EthereumLog<AddVestingPlanEvent['args']>
+export async function handleVestingPlanAdded(
+  event: EthereumLog<VestingPlanAddedEvent['args']>
 ): Promise<void> {
-  const handler = 'handleNewVestingPlan';
+  const handler = 'handleVestingPlanAdded';
   logger.info(handler);
   assert(event.args, 'No event args');
 
@@ -27,10 +30,10 @@ export async function handleNewVestingPlan(
   await vestingPlan.save();
 }
 
-export async function handleVestingAllocation(
+export async function handleVestingAllocated(
   event: EthereumLog<VestingAllocatedEvent['args']>
 ): Promise<void> {
-  const handler = 'handleVestingAllocation';
+  const handler = 'handleVestingAllocated';
   logger.info(handler);
   assert(event.args, 'No event args');
 
@@ -50,10 +53,10 @@ export async function handleVestingAllocation(
   await vestingAllocation.save();
 }
 
-export async function handleVestingClaim(
-  event: EthereumLog<VestingClaimed['args']>
+export async function handleVestingClaimed(
+  event: EthereumLog<VestingClaimedEvent['args']>
 ): Promise<void> {
-  const handler = 'handleVestingClaim';
+  const handler = 'handleVestingClaimed';
   logger.info(handler);
   assert(event.args, 'No event args');
 
@@ -68,8 +71,6 @@ export async function handleVestingClaim(
     claimRecord.remainder = allocationRecord.amount - claimRecord.totalClaimed;
     await claimRecord.save();
   } else {
-    const allocationRecord = await VestingAllocation.get(user);
-    assert(allocationRecord, 'No allocation record found');
     const claim = VestingClaim.create({
       id: user,
       allocationId: user,

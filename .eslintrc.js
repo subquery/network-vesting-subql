@@ -29,7 +29,7 @@ module.exports = {
     ],
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-call': 'off',
-    '@typescript-eslint/no-unsafe-member-access': 'warnning',
+    '@typescript-eslint/no-unsafe-member-access': 'off',
     'header/header': [
       2,
       'line',
@@ -38,7 +38,7 @@ module.exports = {
           pattern:
             ' Copyright \\d{4}(-\\d{4})? SubQuery Pte Ltd authors & contributors',
           template:
-            ' Copyright 2020-2022 SubQuery Pte Ltd authors & contributors',
+            ' Copyright 2020-2023 SubQuery Pte Ltd authors & contributors',
         },
         ' SPDX-License-Identifier: Apache-2.0',
       ],
