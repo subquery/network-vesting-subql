@@ -30,6 +30,7 @@ export async function handleVestingPlanAdded(
   });
 
   await vestingPlan.save();
+  logger.info(`Vesting plan added: ${id}`);
 }
 
 export async function handleVestingAllocated(
@@ -53,6 +54,7 @@ export async function handleVestingAllocated(
     amount: allocation.toBigInt(),
   });
   await vestingAllocation.save();
+  logger.info(`Vesting allocated to user: ${user}`);
 }
 
 export async function handleVestingClaimed(

@@ -21,7 +21,7 @@ network:
 
 x-ethereum: &ethereum
   kind: ethereum/Runtime
-  startBlock: 40229772
+  startBlock: 40266832 
   assets:
     vesting:
       file: ./node_modules/@subql/contract-sdk/artifacts/contracts/Vesting.sol/Vesting.json
