@@ -20,7 +20,7 @@ export async function handleVestingPlanAdded(
   const { planId, lockPeriod, vestingPeriod, initialUnlockPercent } =
     event.args;
 
-  const id = `${event.address}:${planId.toString()}}`;
+  const id = `${event.address}:${planId.toString()}`;
   const vestingPlan = VestingPlan.create({
     id,
     lockPeriod: lockPeriod.toBigInt(),
