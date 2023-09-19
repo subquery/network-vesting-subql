@@ -30,7 +30,7 @@ dataSources:
   - <<: *ethereum
     options:
       abi: vesting
-      address: '0xF7cec3B18B01Fc7Cacab478BD3037C24Ce21239f'
+      address: '0x4D1d1d932388E5d3015BEf071FC994A370892DEb'
     mapping:
       file: ./dist/index.js
       handlers:

@@ -3190,10 +3190,10 @@
     semver "^7.5.2"
     update-notifier "5.1.0"
 
-"@subql/contract-sdk@^0.16.1-1":
-  version "0.16.1-1"
-  resolved "https://registry.yarnpkg.com/@subql/contract-sdk/-/contract-sdk-0.16.1-1.tgz#64fcdc1dc53005e0c318129aebb67f3b1b7884c2"
-  integrity sha512-zW45/AcvB4DwEd/9EhZG17hXjHtjNTIlKvBIcRUcC8HeeqTjkkUqtZ/+svgpD0bDinFo0eJftmrAzubdjIGdpA==
+"@subql/contract-sdk@^0.16.1-2":
+  version "0.16.1-2"
+  resolved "https://registry.yarnpkg.com/@subql/contract-sdk/-/contract-sdk-0.16.1-2.tgz#99eb7300c6eae30b3e46e850d0df7bf704d0bd09"
+  integrity sha512-OI0AdyWeZl2whzz6CFsVZcUfV8P0Pb2Yz3+f8fQ05Wl+UxTcfKlQQDCrZygfBgSbcgb4nYGaLctNNKFkNmMB7Q==
   dependencies:
     "@openzeppelin/contracts-upgradeable" "^4.5.2"
 
