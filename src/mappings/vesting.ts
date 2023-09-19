@@ -8,7 +8,12 @@ import {
 } from '@subql/contract-sdk/typechain/Vesting';
 import { EthereumLog } from '@subql/types-ethereum';
 import assert from 'assert';
+import { BigNumber } from 'ethers';
 import { VestingAllocation, VestingClaim, VestingPlan } from '../types';
+
+function entityId(event: EthereumLog, suffix: string | BigNumber): string {
+  return `${event.address}:${suffix.toString()}`;
+}
 
 export async function handleVestingPlanAdded(
   event: EthereumLog<VestingPlanAddedEvent['args']>
@@ -20,7 +25,7 @@ export async function handleVestingPlanAdded(
   const { planId, lockPeriod, vestingPeriod, initialUnlockPercent } =
     event.args;
 
-  const id = `${event.address}:${planId.toString()}`;
+  const id = entityId(event, planId);
   const vestingPlan = VestingPlan.create({
     id,
     lockPeriod: lockPeriod.toBigInt(),
@@ -42,15 +47,15 @@ export async function handleVestingAllocated(
 
   const { user, planId, allocation } = event.args;
 
-  const vestingPlan = await VestingPlan.get(`${event.address}:${planId.toString()}`);
+  const vestingPlan = await VestingPlan.get(entityId(event, planId));
   assert(vestingPlan, 'No vesting plan found');
   vestingPlan.totalAllocation =
     vestingPlan.totalAllocation + allocation.toBigInt();
   await vestingPlan.save();
 
   const vestingAllocation = VestingAllocation.create({
-    id: `${event.address}:${user}`,
-    planId: planId.toString(),
+    id: entityId(event, user),
+    planId: entityId(event, planId),
     amount: allocation.toBigInt(),
   });
   await vestingAllocation.save();
@@ -66,7 +71,7 @@ export async function handleVestingClaimed(
 
   const { user, amount } = event.args;
 
-  const id = `${event.address}:${user}`;
+  const id = entityId(event, user);
   const allocationRecord = await VestingAllocation.get(id);
   assert(allocationRecord, 'No allocation record found');
 
@@ -78,7 +83,7 @@ export async function handleVestingClaimed(
   } else {
     const claim = VestingClaim.create({
       id,
-      allocationId: user,
+      allocationId: entityId(event, user),
       totalClaimed: amount.toBigInt(),
       remainder: allocationRecord.amount - amount.toBigInt(),
     });

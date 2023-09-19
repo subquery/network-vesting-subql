@@ -56,3 +56,4 @@ Thumbs.db
 .eslintcache
 docker-compose-kepler.yml
 docker-compose-testnet.yml
+docker-compose.yml
