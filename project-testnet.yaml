@@ -49,4 +49,48 @@ dataSources:
           filter:
             topics:
               - VestingClaimed(address indexed user, uint256 amount);
+  - <<: *ethereum
+    options:
+      abi: vesting
+      address: '0xA7b88D860cE66D2849782F0fD1413E0b1D6089f0'
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleVestingPlanAdded
+          kind: ethereum/LogHandler
+          filter:
+            topics:
+              - VestingPlanAdded(uint256 planId, uint256 lockPeriod, uint256 vestingPeriod, uint256 initialUnlockPercent)
+        - handler: handleVestingAllocated
+          kind: ethereum/LogHandler
+          filter:
+            topics:
+              - VestingAllocated(address indexed user, uint256 planId, uint256 allocation);
+        - handler: handleVestingClaimed
+          kind: ethereum/LogHandler
+          filter:
+            topics:
+              - VestingClaimed(address indexed user, uint256 amount);
+  - <<: *ethereum
+    options:
+      abi: vesting
+      address: '0x901694bF30c351E233dE64661c52812C3913F028'
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleVestingPlanAdded
+          kind: ethereum/LogHandler
+          filter:
+            topics:
+              - VestingPlanAdded(uint256 planId, uint256 lockPeriod, uint256 vestingPeriod, uint256 initialUnlockPercent)
+        - handler: handleVestingAllocated
+          kind: ethereum/LogHandler
+          filter:
+            topics:
+              - VestingAllocated(address indexed user, uint256 planId, uint256 allocation);
+        - handler: handleVestingClaimed
+          kind: ethereum/LogHandler
+          filter:
+            topics:
+              - VestingClaimed(address indexed user, uint256 amount);
  
