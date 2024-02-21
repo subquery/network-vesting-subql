@@ -5,15 +5,10 @@ import {
   VestingAllocatedEvent,
   VestingClaimedEvent,
   VestingPlanAddedEvent,
-} from '@subql/contract-sdk/typechain/Vesting';
+} from '@subql/contract-sdk/typechain/contracts/root/Vesting';
 import { EthereumLog } from '@subql/types-ethereum';
 import assert from 'assert';
-import { BigNumber } from 'ethers';
 import { VestingAllocation, VestingClaim, VestingPlan } from '../types';
-
-function entityId(event: EthereumLog, suffix: string | BigNumber): string {
-  return `${event.address}:${suffix.toString()}`;
-}
 
 export async function handleVestingPlanAdded(
   event: EthereumLog<VestingPlanAddedEvent['args']>
@@ -25,9 +20,8 @@ export async function handleVestingPlanAdded(
   const { planId, lockPeriod, vestingPeriod, initialUnlockPercent } =
     event.args;
 
-  const id = entityId(event, planId);
   const vestingPlan = VestingPlan.create({
-    id,
+    id: planId.toString(),
     lockPeriod: lockPeriod.toBigInt(),
     vestingPeriod: vestingPeriod.toBigInt(),
     initialUnlockPercentage: initialUnlockPercent.toBigInt(),
@@ -35,7 +29,7 @@ export async function handleVestingPlanAdded(
   });
 
   await vestingPlan.save();
-  logger.info(`Vesting plan added: ${id}`);
+  logger.info(`Vesting plan added: ${planId.toString()}`);
 }
 
 export async function handleVestingAllocated(
@@ -47,15 +41,15 @@ export async function handleVestingAllocated(
 
   const { user, planId, allocation } = event.args;
 
-  const vestingPlan = await VestingPlan.get(entityId(event, planId));
+  const vestingPlan = await VestingPlan.get(planId.toString());
   assert(vestingPlan, 'No vesting plan found');
   vestingPlan.totalAllocation =
     vestingPlan.totalAllocation + allocation.toBigInt();
   await vestingPlan.save();
 
   const vestingAllocation = VestingAllocation.create({
-    id: entityId(event, user),
-    planId: entityId(event, planId),
+    id: user,
+    planId: planId.toString(),
     amount: allocation.toBigInt(),
   });
   await vestingAllocation.save();
@@ -69,21 +63,21 @@ export async function handleVestingClaimed(
   logger.info(handler);
   assert(event.args, 'No event args');
 
-  const { user, amount } = event.args;
+  const { user, amount, planId } = event.args;
 
-  const id = entityId(event, user);
-  const allocationRecord = await VestingAllocation.get(id);
+  const allocationRecord = await VestingAllocation.get(user);
   assert(allocationRecord, 'No allocation record found');
 
-  const claimRecord = await VestingClaim.get(id);
+  const claimRecord = await VestingClaim.get(user);
   if (claimRecord) {
     claimRecord.totalClaimed = claimRecord.totalClaimed + amount.toBigInt();
     claimRecord.remainder = allocationRecord.amount - claimRecord.totalClaimed;
     await claimRecord.save();
   } else {
     const claim = VestingClaim.create({
-      id,
-      allocationId: entityId(event, user),
+      id: user,
+      planId: planId.toString(),
+      allocationId: user,
       totalClaimed: amount.toBigInt(),
       remainder: allocationRecord.amount - amount.toBigInt(),
     });

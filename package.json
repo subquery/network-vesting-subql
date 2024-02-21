@@ -5,8 +5,11 @@
   "main": "dist/index.js",
   "scripts": {
     "build:testnet": "yarn check-filters testnet && ./node_modules/.bin/subql build",
-    "codegen:testnet": "./node_modules/.bin/subql codegen -f ./project-testnet.yaml",
-    "deploy:testnet": "subql publish -f ./project-testnet.yaml",
+    "codegen:testnet": "./node_modules/.bin/subql codegen -f ./project-testnet.yml",
+    "deploy:testnet": "subql publish -f ./project-testnet.yml",
+    "build:mainnet": "yarn check-filters mainnet && ./node_modules/.bin/subql build",
+    "codegen:mainnet": "./node_modules/.bin/subql codegen -f ./project-mainnet.yml",
+    "deploy:mainnet": "subql publish -f ./project-mainnet.yml",
     "validate": "subql validate",
     "prepare": "husky install",
     "postinstall": "sh ./scripts/postinstall.sh",
@@ -25,7 +28,7 @@
   "author": "SubQuery Pty. Limited",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@subql/cli": "^3.6.1",
+    "@subql/cli": "^4.2.5",
     "@typechain/ethers-v5": "^10.2.0",
     "@types/bs58": "^4.0.1",
     "@types/js-yaml": "^4.0.5",
@@ -45,8 +48,8 @@
   },
   "dependencies": {
     "@ethersproject/abi": "^5.7.0",
-    "@subql/contract-sdk": "^0.16.1-4",
-    "@subql/types-ethereum": "^2.2.4",
+    "@subql/contract-sdk": "^1.0.0",
+    "@subql/types-ethereum": "^3.2.1",
     "@types/pino": "^7.0.5",
     "@types/validator": "latest",
     "bs58": "^4.0.1",

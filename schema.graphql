@@ -1,5 +1,5 @@
 type VestingPlan @entity {
-  id: ID! # contract address + plan id
+  id: ID! # plan id
   lockPeriod: BigInt! #lock period in seconds
   vestingPeriod: BigInt! #vesting period in seconds
   initialUnlockPercentage: BigInt! #initial unlock percentage (<=100)
@@ -7,14 +7,15 @@ type VestingPlan @entity {
 }
 
 type VestingAllocation @entity {
-  id: ID! # contract address + user address
+  id: ID! # user address
   plan: VestingPlan! # vesting plan
   amount: BigInt! # user allocation
 }
 
 type VestingClaim @entity {
-  id: ID! # contract address + user address
+  id: ID! # user address
   allocation: VestingAllocation! # vesting allocation
+  plan: VestingPlan! # vesting plan
   totalClaimed: BigInt! # total claimed amount
   remainder: BigInt! # remainder amount
 }

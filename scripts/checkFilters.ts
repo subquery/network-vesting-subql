@@ -17,9 +17,9 @@ function getProjectFile() {
   const network = process.argv[2];
   switch (network) {
     case 'testnet':
-      return path.resolve(__dirname, '../project-testnet.yaml');
-    case 'kepler':
-      return path.resolve(__dirname, '../project-kepler.yaml');
+      return path.resolve(__dirname, '../project-testnet.yml');
+    case 'mainnet':
+      return path.resolve(__dirname, '../project-mainnet.yml');
     default:
       throw new Error('Unknown network');
   }
