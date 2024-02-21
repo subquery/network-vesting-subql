@@ -10,6 +10,10 @@ import { EthereumLog } from '@subql/types-ethereum';
 import assert from 'assert';
 import { VestingAllocation, VestingClaim, VestingPlan } from '../types';
 
+function entityId(event: EthereumLog, suffix: string): string {
+  return `${event.address}:${suffix}`;
+}
+
 export async function handleVestingPlanAdded(
   event: EthereumLog<VestingPlanAddedEvent['args']>
 ): Promise<void> {
@@ -21,7 +25,7 @@ export async function handleVestingPlanAdded(
     event.args;
 
   const vestingPlan = VestingPlan.create({
-    id: planId.toString(),
+    id: entityId(event, planId.toString()),
     lockPeriod: lockPeriod.toBigInt(),
     vestingPeriod: vestingPeriod.toBigInt(),
     initialUnlockPercentage: initialUnlockPercent.toBigInt(),
@@ -41,15 +45,15 @@ export async function handleVestingAllocated(
 
   const { user, planId, allocation } = event.args;
 
-  const vestingPlan = await VestingPlan.get(planId.toString());
+  const vestingPlan = await VestingPlan.get(entityId(event, planId.toString()));
   assert(vestingPlan, 'No vesting plan found');
   vestingPlan.totalAllocation =
     vestingPlan.totalAllocation + allocation.toBigInt();
   await vestingPlan.save();
 
   const vestingAllocation = VestingAllocation.create({
-    id: user,
-    planId: planId.toString(),
+    id: entityId(event, user),
+    planId: entityId(event, planId.toString()),
     amount: allocation.toBigInt(),
   });
   await vestingAllocation.save();
@@ -75,8 +79,8 @@ export async function handleVestingClaimed(
     await claimRecord.save();
   } else {
     const claim = VestingClaim.create({
-      id: user,
-      planId: planId.toString(),
+      id: entityId(event, user),
+      planId: entityId(event, planId.toString()),
       allocationId: user,
       totalClaimed: amount.toBigInt(),
       remainder: allocationRecord.amount - amount.toBigInt(),
