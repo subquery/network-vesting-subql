@@ -1,0 +1,54 @@
+specVersion: 1.0.0
+name: subquery-vesting
+version: 1.0.0
+runner:
+  node:
+    name: '@subql/node-ethereum'
+    version: '*'
+    options:
+      unfinalizedBlocks: true
+  query:
+    name: '@subql/query'
+    version: '*'
+description: 'Vesting Contract for SubQuery Kepler Testnet'
+repository: ''
+schema:
+  file: ./schema.graphql
+
+network:
+  chainId: '11155111' # ethereum
+  endpoint: https://1rpc.io/sepolia
+  dictionary: ''
+
+x-ethereum: &ethereum
+  kind: ethereum/Runtime
+  startBlock: 
+    5297864
+
+  assets:
+    vesting:
+      file: ./node_modules/@subql/contract-sdk/artifacts/contracts/root/Vesting.sol/Vesting.json
+
+dataSources:
+  - <<: *ethereum
+    options:
+      abi: vesting
+      address: '0x15b64D7036667695Ee68D6619CEb162aEaFAdbA6'
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleVestingPlanAdded
+          kind: ethereum/LogHandler
+          filter:
+            topics:
+              - VestingPlanAdded(uint256 planId, uint256 lockPeriod, uint256 vestingPeriod, uint256 initialUnlockPercent)
+        - handler: handleVestingAllocated
+          kind: ethereum/LogHandler
+          filter:
+            topics:
+              - VestingAllocated(address indexed user, uint256 planId, uint256 allocation);
+        - handler: handleVestingClaimed
+          kind: ethereum/LogHandler
+          filter:
+            topics:
+              - VestingClaimed(address indexed user, uint256 planId, uint256 amount);
