@@ -2624,10 +2624,10 @@
     semver "^7.5.2"
     update-notifier "5.1.0"
 
-"@subql/contract-sdk@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@subql/contract-sdk/-/contract-sdk-1.0.0.tgz#7021c57fc544a663c6068f874341f640d09b43bc"
-  integrity sha512-U6kzojF5BuXTGrrr5a+QvweNKiHABX4ncyPd2oEFRFNrdakGTw8Yx9lzMDj1msx/vZ01542iu9lAQVriiwt8tw==
+"@subql/contract-sdk@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@subql/contract-sdk/-/contract-sdk-1.0.1.tgz#d4f29ee74b45ce4b8903e6c365f537ddf5cea519"
+  integrity sha512-+ZcZLgvZ7UDg57r2AYHsZV4DnxVMwlXPp1KGMncyC/c8ZpFdc5wam0uPGn7Hb5mmGSGQZ/aIUWuJHqIg7lhANw==
 
 "@subql/types-algorand@3.1.2":
   version "3.1.2"

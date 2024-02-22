@@ -23,7 +23,7 @@ network:
 x-ethereum: &ethereum
   kind: ethereum/Runtime
   startBlock: 
-    19273211
+    19283009
 
   assets:
     vesting:
@@ -33,7 +33,7 @@ dataSources:
   - <<: *ethereum
     options:
       abi: vesting
-      address: '0xe420f94aA7e8670f997aD67f2A36B08f5bc9364f'
+      address: '0x24Ca300577b16096824680A10672e9fDaD734D47'
     mapping:
       file: ./dist/index.js
       handlers:
