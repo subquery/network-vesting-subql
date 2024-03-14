@@ -8,12 +8,16 @@ type VestingPlan @entity {
 
 type VestingAllocation @entity {
   id: ID! # contractAddress:user address
+  user: String! @index
+  contract: String!
   plan: VestingPlan! # vesting plan
   amount: BigInt! # user allocation
 }
 
 type VestingClaim @entity {
-  id: ID! # contractAddress:user address
+  id: ID! # contractAddress:plan:user address
+  user: String! @index
+  contract: String!
   allocation: VestingAllocation! # vesting allocation
   plan: VestingPlan! # vesting plan
   totalClaimed: BigInt! # total claimed amount
